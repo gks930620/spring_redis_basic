@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${room.name}"></title>
+    <script src="/js/chat.js"></script>
+</head>
+<body>
+<h1 th:text="${room.name}"></h1>
+<div id="chat-messages"></div>
+<form id="chat-form">
+    <input type="text" id="chat-message" required>
+    <button type="submit">Send</button>
+</form>
+</body>
+
+<script th:inline="javascript">
+    var roomId = /*[[${roomName}]]*/ '';
+
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/chat/' + roomId, function (message) {
+                showMessage(JSON.parse(message.body));
+            });
+        });
+    }
+
+    function showMessage(message) {
+        var chatBox = document.getElementById("chat-box");
+        var messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+
+        var senderElement = document.createElement('span');
+        senderElement.classList.add('sender');
+        senderElement.innerText = message.sender + ": ";
+
+        var contentElement = document.createElement('span');
+        contentElement.classList.add('content');
+        contentElement.innerText = message.content;
+
+        messageElement.appendChild(senderElement);
+        messageElement.appendChild(contentElement);
+        chatBox.appendChild(messageElement);
+    }
+
+    function send() {
+        var messageInput = document.getElementById("message-input");
+        var messageContent = messageInput.value.trim();
+
+        if (messageContent && stompClient) {
+            var chatMessage = {
+                sender: getUserName(),
+                content: messageContent,
+                type: 'CHAT'
+            };
+            stompClient.send("/app/chat/" + roomId, {}, JSON.stringify(chatMessage));
+            messageInput.value = '';
+        }
+    }
+
+    function getUserName() {
+        var userName = localStorage.getItem("userName");
+        if (!userName) {
+            userName = prompt("Please enter your name:");
+            localStorage.setItem("userName", userName);
+        }
+        return userName;
+    }
+
+    connect();
+</script>
+</html>
