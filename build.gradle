@@ -40,3 +40,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar{
+	destinationDirectory = file("./target")
+	archivesBaseName = 'prac'
+	archiveFileName = 'prac.jar'
+	archiveVersion = "0.0.1"
+}
