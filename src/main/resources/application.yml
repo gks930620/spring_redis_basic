@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://vq4k4caz3imnqt2z:wfzdf6f1gv6e6s28@ohunm00fjsjs1uzy.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/or29dhek2am319w5
-    username: vq4k4caz3imnqt2z
-    password: wfzdf6f1gv6e6s28
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -11,3 +11,6 @@ spring:
       hibernate:
         #        show_sql: true
         format_sql: true
+
+
+
