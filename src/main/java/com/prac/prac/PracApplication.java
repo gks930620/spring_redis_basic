@@ -11,4 +11,5 @@ public class PracApplication {
 		SpringApplication.run(PracApplication.class, args);
 	}
 
+
 }
