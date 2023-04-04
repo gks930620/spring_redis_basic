@@ -1,24 +1,9 @@
 server :
   port : 8080
 spring:
-  output:
-    ansi:
-      enabled : always
-#  datasource :
-#    url : jdbc:h2:tcp://localhost/~/ideazip
-#    username : sa
-#    password : sa
-#    driver-class-name: org.h2.Driver
-  jpa :
-    hibernate :
-      ddl-auto: create
-    properties:
-      hibernate:
-        show_sql : true
-        format_sql : true
-        default_batch_fetch_size : 100
-    open-in-view: false
-
+  redis :
+    host : localhost
+    port : 6379
   devtools:   # 정적자원 캐시사용안함=> 새로고침시 바로바로,   but 실제서버운영시 캐시 사용해야된다
     livereload :
       enabled : true
